@@ -28,6 +28,9 @@
     │ └── Dockerfile
     ├── docker-compose.yml
     └── README.md
+
+---
+    
    Each service contains a Dockerfile with:
     
    **Dockerfile**
@@ -46,6 +49,8 @@
     
     CMD ["node", "app.js"]
 
+ ---
+ 
   **docker-compose.yml**
 
    All services are orchestrated using Docker Compose:
@@ -165,6 +170,14 @@ http://localhost:3003/api/orders
 <img width="556" height="233" alt="image" src="https://github.com/user-attachments/assets/44c96884-f4c6-4743-95d3-255744488393" />
 
 ---
+
+##  Stop the containers
+
+  docker compose down
+  
+ <img width="877" height="223" alt="image" src="https://github.com/user-attachments/assets/85b43558-f90f-4639-b2d3-2e2a2c51aea0" />
+
+---  
 
 ##  Push the code to Github
   
