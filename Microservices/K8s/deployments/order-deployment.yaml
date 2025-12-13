@@ -33,13 +33,4 @@ spec:
             limits:
               cpu: "250m"
               memory: "256Mi"
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 3002
-          #   initialDelaySeconds: 15
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 3002
-          #   initialDelaySeconds: 5
+        
