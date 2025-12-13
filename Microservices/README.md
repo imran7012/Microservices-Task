@@ -1,9 +1,8 @@
-# Microservices Containerization using Node.js, Docker & Docker Compose
+# Microservices Kubernetes Deployment Assessment
 
- ## Objective:
+  ## Objective:
  
-        Containerize a microservices-based Node.js application using **Docker** and orchestrate them using **Docker Compose**.
-
+      Deploy a microservices application on Kubernetes using Minikube, ensuring proper service communication and configuration.
 ---
   ## Microservices Included
   
@@ -16,195 +15,130 @@
 
 ---
 
-  ##  Directory Structure (Required for Submission)
+ ## Folder Structure (Final)
      
-    ├── user-service/
-    │ └── Dockerfile
-    ├── product-service/
-    │ └── Dockerfile
-    ├── order-service/
-    │ └── Dockerfile
-    ├── gateway-service/
-    │ └── Dockerfile
-    ├── docker-compose.yml
-    └── README.md
-
----
-    
-   Each service contains a Dockerfile with:
-    
-   **Dockerfile**
-   
-    FROM node:20-alpine
-    
-    WORKDIR /app
-    
-    COPY package*.json ./
-    RUN npm install --production
-    
-    COPY . .
-    
-    EXPOSE 3000  
-    Only the port number changes based on the microservice.
-    
-    CMD ["node", "app.js"]
-
- ---
- 
-  **docker-compose.yml**
-
-   All services are orchestrated using Docker Compose:
-   
-    name: microservices-task
-
-    networks:
-      appnet:
-        driver: bridge
-    
-    services:
-      user-service:
-        build:
-          context: C:\Users\microservices\Microservices-Task\Microservices\user-service
-          dockerfile: Dockerfile
-        container_name: user-service
-        ports:
-          - "3000:3000"
-        environment:
-          - NODE_ENV=production
-        networks:
-          - appnet
-    
-      product-service:
-        build:
-          context: C:\Users\microservices\Microservices-Task\Microservices\product-service
-          dockerfile: Dockerfile
-        container_name: product-service
-        ports:
-          - "3001:3001"
-        environment:
-          - NODE_ENV=production
-        networks:
-          - appnet
-    
-      order-service:
-        build:
-          context: C:\Users\microservices\Microservices-Task\Microservices\order-service
-          dockerfile: Dockerfile
-        container_name: order-service
-        ports:
-          - "3002:3002"
-        environment:
-          - NODE_ENV=production
-        networks:
-          - appnet
-        depends_on:
-          - user-service
-          - product-service
-    
-      gateway:
-        build:
-          context: C:\Users\microservices\Microservices-Task\Microservices\gateway-service
-          dockerfile: Dockerfile
-        container_name: gateway
-        ports:
-          - "3003:3003"
-        environment:
-          - NODE_ENV=production
-          # If your gateway reads these to route internally, keep them:
-          - USERS_URL=http://user-service:3000
-          - PRODUCTS_URL=http://product-service:3001
-          - ORDERS_URL=http://order-service:3002
-        networks:
-          - appnet
-        depends_on:
-          - user-service
-          - product-service
-          - order-service
----
-
-  ##  Start services using Docker Compose
+     K8s/
+     ├── deployments/
+     │   ├── user-deployment.yaml
+     │   ├── product-deployment.yaml
+     │   ├── order-deployment.yaml
+     │   └── gateway-deployment.yaml
+     ├── services/
+     │   ├── user-service.yaml
+     │   ├── product-service.yaml
+     │   ├── order-service.yaml
+     │   └── gateway-service.yaml
+     ├── ingress/
+     │   └── ingress.yaml
+     ├── screenshots/
+     │   ├── pods.png
+     │   ├── logs.png
+     │   └── service-test.png
+     └── README.md
      
-     docker compose up --build
+---
 
-  <img width="1382" height="945" alt="image" src="https://github.com/user-attachments/assets/0bf5b2f0-8664-4c7d-99a2-e3f1a8f5f7cc" />
 
-  <img width="1918" height="962" alt="image" src="https://github.com/user-attachments/assets/bb8369bb-56c6-43e7-b49a-048c912458c2" />
+ ## Create Kubernetes Deployment manifests for all services:
+
+   <img width="1027" height="617" alt="image" src="https://github.com/user-attachments/assets/5ff40878-6fc5-4688-8c85-34e67f62815f" />
 
 ---
 
-  ##  How to test each service
-
- | Service           | Description                       |
- |-------------------|-----------------------------------|
- | User Service	     |   http://localhost:3000/users     |
- | Product Service	 |   http://localhost:3001/products  |
- |  Order Service  	 |   http://localhost:3002/orders    |
- | API Gateway	     |   http://localhost:3003/api/users |
+ ## Create corresponding Service resources:
  
 
-<img width="662" height="272" alt="image" src="https://github.com/user-attachments/assets/d115975e-c507-4a89-8a18-b95f9f3be6f5" />
+   <img width="1100" height="738" alt="image" src="https://github.com/user-attachments/assets/03a721ba-eafd-471f-a4e7-9fadc366f2a9" />
+   
+---
+
+ ## Minikube Setup and Validation:
+   
+   ## Prerequisites:
+   
+     Ensure the following are installed on your system:
+     1.Docker Desktop (Windows)
+     2.kubectl CLI
+
+   ## Enable Kubernetes in Docker Desktop
+
+     1.Open Docker Desktop
+     2.Go to Settings → Kubernetes
+     3.Enable Kubernetes
+     4.Click Apply & Restart
+     5.Wait until Kubernetes status shows Running
+
+   <img width="1917" height="917" alt="image" src="https://github.com/user-attachments/assets/9b35de4c-55d6-475e-983f-83eeeaed4c17" />
+
+---
+
+ ## Documentation and Testing:
+    
+   ## Deployment process:
+     Deployed to default service
+      1.Deploy Microservices:
+         kubectl apply -f deployments/
+ 
+      2.Create Services:
+         kubectl apply -f services/
+ 
+
+   ## Verify Resources:
+       kubectl get pods 
+  
+   <img width="698" height="142" alt="image" src="https://github.com/user-attachments/assets/ae2893f1-c78e-4d3c-815a-20eaecf46f00" />
 
 
-<img width="807" height="331" alt="image" src="https://github.com/user-attachments/assets/9cf8f852-fe97-41cb-87d0-80f6472aadcf" />
+       kubectl get svc 
+
+   <img width="742" height="165" alt="image" src="https://github.com/user-attachments/assets/e2ef2b47-12d3-44f0-affc-bb4e050ebeff" />
+
+---
+
+ ## Bonus Task: Ingress Configuration (Optional)
+    
+   ## Install NGINX Ingress Controller:
+
+       kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.2/deploy/static/provider/cloud/deploy.yaml
+
+       kubectl get svc -n ingress-nginx
+
+   <img width="1096" height="95" alt="image" src="https://github.com/user-attachments/assets/1dd1b4f0-155a-458f-a1ec-82cc451b50d9" />
 
 
-<img width="592" height="257" alt="image" src="https://github.com/user-attachments/assets/7b1e024f-2f77-4a18-868c-c626d2ed3d4b" />
+  ## Apply Ingress:
+         
+         kubectl apply -f ingress/ingress.yaml
+
+         kubectl get ingress
+
+   <img width="742" height="76" alt="image" src="https://github.com/user-attachments/assets/645209ff-f8a4-4e73-a68e-f0e36288e524" />
+
+---
+      
+ ## Service Testing:
+
+   Without port forward apis are working.
+
+   
+   http://localhost/api/users
+   
+ <img width="633" height="246" alt="image" src="https://github.com/user-attachments/assets/b19d4d7b-e0a6-4dc5-8251-4769e854755f" />
+
+
+   http://localhost/api/products
+
+ <img width="838" height="245" alt="image" src="https://github.com/user-attachments/assets/65154cfd-2eac-46d4-a4e3-8926b1dc5642" />
+
+   http://localhost/api/orders
+
+ <img width="853" height="253" alt="image" src="https://github.com/user-attachments/assets/241ea7e7-26db-4d72-a71e-a62009818ba1" />
 
 ---
 
 
-**This is Gateway level:**
 
----
-
-http://localhost:3003/api/users
-
-<img width="711" height="277" alt="image" src="https://github.com/user-attachments/assets/1c9131fc-f01b-4324-8805-5df2a0e10233" />
-
-http://localhost:3003/api/products
-
-<img width="837" height="257" alt="image" src="https://github.com/user-attachments/assets/9aef168f-3e87-4cb0-8751-5b4d48635c74" />
-
-http://localhost:3003/api/orders
-
-<img width="556" height="233" alt="image" src="https://github.com/user-attachments/assets/44c96884-f4c6-4743-95d3-255744488393" />
-
----
-
-##  Stop the containers
-
-  docker compose down
-  
- <img width="877" height="223" alt="image" src="https://github.com/user-attachments/assets/85b43558-f90f-4639-b2d3-2e2a2c51aea0" />
-
----  
-
-##  Push the code to Github
-  
-  git add .
-  
-  git status
-  
-  
-  <img width="751" height="308" alt="image" src="https://github.com/user-attachments/assets/684b38ec-cb88-4788-9e79-899f378ee77a" />
-  
-  
----
-
-git commit -m "message"
-
-  <img width="862" height="228" alt="image" src="https://github.com/user-attachments/assets/58e1eeda-1341-43d5-9f1f-07029994c999" />
-
-  
----  
-
-git push orgin main
-
-  <img width="872" height="255" alt="image" src="https://github.com/user-attachments/assets/866d8be6-f3eb-475d-a7fc-ce8db801f6c9" />
-
----
-
-<img width="1838" height="882" alt="image" src="https://github.com/user-attachments/assets/c8944722-c27d-451d-90e6-00cb34fc6377" />
+   
 
 
 
