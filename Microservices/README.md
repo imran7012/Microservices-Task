@@ -38,6 +38,25 @@
      
 ---
 
+ ## Build and Push Docker images to docker-hub:
+
+   ## Build Images:
+
+    docker build -t imran7012/user-service .
+    docker build -t imran7012/product-service .
+    docker build -t imran7012/order-service .
+    docker build -t imran7012/gateway-service .
+
+   ## Push Images:
+
+    docker push imran7012/user-service
+    docker push imran7012/product-service
+    docker push imran7012/order-service
+    docker push imran7012/gateway-service
+
+<img width="1856" height="733" alt="image" src="https://github.com/user-attachments/assets/11ffe73b-b20d-49b5-b3a4-c3e7754e4969" />
+  
+---
 
  ## Create Kubernetes Deployment manifests for all services:
 
